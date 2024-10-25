@@ -86,10 +86,7 @@ Then, navigate to [http://localhost:9235](http://localhost:9235) in your browser
 
 The page displays:
 
-1. **Live Status** (updated every 5 seconds)
-2. **Average RSSI**
-3. **Short-term Prediction (1 min)**
-4. **Most Probable Status (4 min)**
+![results](screenshot.png)
 
 **Note:** All status changes are logged to `wisen.log`.
 
