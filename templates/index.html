@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Status Monitoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 600px;
+        }
+        .status-box h2 {
+            margin: 0;
+            color: #555;
+        }
+        .status-box p {
+            font-size: 1.2em;
+        }
+        .status-live {
+            background-color: #e3f2fd;
+        }
+        .status-avg {
+            background-color: #e8f5e9;
+        }
+        .status-occupied {
+            background-color: #e8f5e9;  /* Greenish background */
+        }
+        .status-empty {
+            background-color: #ffebee;  /* Reddish background */
+        }
+        .status-error {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Room Status Monitoring</h1>
+    <div class="container">
+        <div id="status_live_box" class="status-box status-live">
+            <h2>Live Status</h2>
+            <p id="status_live">Loading...</p>
+        </div>
+        <div id="average_rssi_box" class="status-box status-avg">
+            <h2>Average RSSI</h2>
+            <p id="average_rssi">Calculating...</p>
+        </div>
+        <div id="status_avg_box" class="status-box status-avg">
+            <h2>Average Status</h2>
+            <p id="status_avg">Calculating...</p>
+        </div>
+        <div id="most_probable_status_box" class="status-box status-avg">
+            <h2>Most Probable Status</h2>
+            <p id="most_probable_status">Calculating...</p>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus() {
+            fetch('/predict', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('status_live').textContent = 'Error: ' + data.error;
+                    document.getElementById('average_rssi').textContent = 'Error: ' + data.error;
+                    document.getElementById('status_avg').textContent = 'Error: ' + data.error;
+                    document.getElementById('most_probable_status').textContent = 'Error: ' + data.error;
+                    document.getElementById('status_live_box').classList.add('status-error');
+                    document.getElementById('average_rssi_box').classList.add('status-error');
+                    document.getElementById('status_avg_box').classList.add('status-error');
+                    document.getElementById('most_probable_status_box').classList.add('status-error');
+                } else {
+                    document.getElementById('status_live').textContent = `Live Status: ${data.status_live}, Live RSSI: ${data.live_rssi.toFixed(2)}, Time: ${data.timestamp}`;
+                    document.getElementById('average_rssi').textContent = `Average RSSI: ${data.average_rssi_15 ? data.average_rssi_15.toFixed(2) : 'Calculating...'}`;
+                    document.getElementById('status_avg').textContent = `Average Status: ${data.status_avg}`;
+                    document.getElementById('most_probable_status').textContent = data.most_probable_status;
+
+                    document.getElementById('status_live_box').classList.remove('status-error');
+                    document.getElementById('average_rssi_box').classList.remove('status-error');
+                    document.getElementById('status_avg_box').classList.remove('status-error');
+                    document.getElementById('most_probable_status_box').classList.remove('status-error');
+
+                    // Change the background color based on the live status
+                    if (data.status_live === 'Occupied') {
+                        document.getElementById('status_live_box').classList.add('status-occupied');
+                        document.getElementById('status_live_box').classList.remove('status-empty');
+                    } else {
+                        document.getElementById('status_live_box').classList.add('status-empty');
+                        document.getElementById('status_live_box').classList.remove('status-occupied');
+                    }
+
+                    // Change the background color based on the average status
+                    if (data.status_avg === 'Occupied') {
+                        document.getElementById('status_avg_box').classList.add('status-occupied');
+                        document.getElementById('status_avg_box').classList.remove('status-empty');
+                    } else {
+                        document.getElementById('status_avg_box').classList.add('status-empty');
+                        document.getElementById('status_avg_box').classList.remove('status-occupied');
+                    }
+
+                    // Change the background color based on the most probable status
+                    if (data.most_probable_status === 'Occupied') {
+                        document.getElementById('most_probable_status_box').classList.add('status-occupied');
+                        document.getElementById('most_probable_status_box').classList.remove('status-empty');
+                    } else {
+                        document.getElementById('most_probable_status_box').classList.add('status-empty');
+                        document.getElementById('most_probable_status_box').classList.remove('status-occupied');
+                    }
+                }
+            })
+            .catch(error => {
+                document.getElementById('status_live').textContent = 'Error: ' + error;
+                document.getElementById('average_rssi').textContent = 'Error: ' + error;
+                document.getElementById('status_avg').textContent = 'Error: ' + error;
+                document.getElementById('most_probable_status').textContent = 'Error: ' + error;
+                document.getElementById('status_live_box').classList.add('status-error');
+                document.getElementById('average_rssi_box').classList.add('status-error');
+                document.getElementById('status_avg_box').classList.add('status-error');
+                document.getElementById('most_probable_status_box').classList.add('status-error');
+            });
+        }
+
+        // Update the status every 5 seconds
+        setInterval(updateStatus, 5000);
+
+        // Initial update
+        updateStatus();
+    </script>
+</body>
+</html>
