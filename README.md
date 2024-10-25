@@ -24,7 +24,7 @@ To run Wisen, you will need:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/your-repo/Wisen.git
+   git clone https://github.com/Wisen/Wisen.git
    ```
 
 2. Set up a virtual environment using Python:
