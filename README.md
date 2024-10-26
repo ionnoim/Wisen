@@ -82,11 +82,7 @@ To start live detection, run:
 python detect.py
 ```
 
-Then, navigate to [http://localhost:9235](http://localhost:9235) in your browser (you can change the hardcoded port in the source code).
-
-The page displays:
-
-![results](screenshot.png)
+Then, navigate to [http://localhost:5000](http://localhost:5000) in your browser (you can change the hardcoded port in the source code).
 
 **Note:** All status changes are logged to `wisen.log`.
 
