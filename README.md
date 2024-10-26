@@ -16,7 +16,7 @@ This project aims to bring awareness of WiFi sensing technology to researchers a
 
 To run Wisen, you will need:
 - A WiFi interface that supports monitor mode.
-- A router for creating the monitored space.
+- A router is optional if you want to monitor in-line or multi-room.
 - Python installed on your machine.
 
 ## Installation
