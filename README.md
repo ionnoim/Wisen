@@ -1,4 +1,4 @@
-﻿# Wisen Room Status Monitor
+﻿# Wisen
 ![screenshot](screenshot.png)
 
 
