@@ -46,7 +46,7 @@ To run Wisen, you will need:
 
 With router connected for in-line monitoring and multi-room: The ideal setup is a room where the router is on one side and the WiFi interface on the opposite side. The monitored space should be between both devices. It can work in other setups, but performance may vary. I have tested this going through multiple rooms and was still able to get good predictions. Movement in areas in line with the monitored space can also affect the signal. By experimenting with hardware positioning and retraining the AI, I achieved 99% accuracy.
 
-Note that this also works with a wifi adapter in monitor mode that is simply sitting in the room with no connection to a router and it will monitor the surrounding space.
+Without a router for monitoring surrounding space: simply have the adapter running in monitor mode sitting in the space you want to monitor. Use the same steps for training the AI
 
 **Note:** If any major changes are made, such as moving furniture, you will need to re-capture data and re-train the AI.
 
