@@ -1,6 +1,6 @@
 ﻿# Wisen Room Status Monitor
+![screenshot](screenshot.png)
 
-Open-source project by ionnoim.
 
 ## Introduction
 
